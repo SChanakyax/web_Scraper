@@ -26,7 +26,36 @@ print(rating[0].text)
    # print(span.text.replace('shipping', '').strip())
 
 shipping = container.find_all('span', {'class': 's-item__shipping s-item__logisticsCost'})
-print(shipping[0].text)
+#print(shipping[0].text)
 for span in shipping:
     print(span.text.replace('shipping', '').strip())
 
+filename = "ebay.csv"
+f = open(filename, "w")
+
+headers = "ProductName,Price,Shipping\n"
+f.write(headers)
+
+for container in containers:
+    productname = container.div.img["alt"]
+
+    pricecontainer = container.findAll("div", {"class":"s-item__detail s-item__detail--primary"})
+    price = pricecontainer[0].text.strip()
+
+    #ratingcontainer = container.find_all('span', {'class': 's-item__reviews-count'})
+   # rating = ratingcontainer[0].text
+
+    shippingcontainer =  container.find_all('span', {'class': 's-item__shipping s-item__logisticsCost'})
+    shipping = shippingcontainer[0].text.replace('shipping', '').strip()
+
+    print(productname + "," + price + "," + shipping + "\n")
+    f.write(productname.replace(",", "|") + "," + price + "," + shipping + "\n")
+
+f.close()
+
+'''
+    print("productName: " + productname)
+    print("price: " + price)
+    print("shipping: " + shipping + "\n\n")
+   # print("rating; " + rating)
+'''
